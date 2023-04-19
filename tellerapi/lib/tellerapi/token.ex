@@ -8,7 +8,7 @@ defmodule Tellerapi.Token do
   """
   @spec sign(map()) :: binary()
   def sign(data) do
-    Phoenix.Token.sign(MyAppWeb.Endpoint, @signing_salt, data)
+    Phoenix.Token.sign(TellerapiWeb.Endpoint, @signing_salt, data)
   end
 
   @doc """
@@ -18,7 +18,7 @@ defmodule Tellerapi.Token do
   """
   @spec verify(String.t()) :: {:ok, any()} | {:error, :unauthenticated}
   def verify(token) do
-    case Phoenix.Token.verify(MyAppWeb.Endpoint, @signing_salt, token,
+    case Phoenix.Token.verify(TellerapiWeb.Endpoint, @signing_salt, token,
              max_age: @token_age_secs
            ) do
       {:ok, data} -> {:ok, data}

@@ -13,6 +13,7 @@ defmodule TellerapiWeb.Router do
     pipe_through :api
 
     get "/", WelcomeController, :index
+    post "/enroll", SessionController, :enroll
   end
 
   scope "/api", MyAppWeb do
