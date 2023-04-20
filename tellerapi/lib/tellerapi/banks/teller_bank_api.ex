@@ -34,15 +34,6 @@ defmodule Tellerapi.Bank.TellerBankApi do
     mfa_device_id = Enum.at(body_decoded["data"]["devices"], 1)["id"]
     request_body_map = %{device_id: mfa_device_id}
     {:ok, request_body} = Poison.encode(request_body_map)
-    IO.puts("----")
-    IO.inspect(request_body)
-    IO.puts("----")
-    IO.puts("----")
-    IO.inspect(request_headers)
-    IO.puts("----")
-    IO.puts("----")
-    IO.inspect(f_token)
-    IO.puts("----")
     case HTTPoison.post(mfa_request_url, request_body, request_headers) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body, headers: headers}} ->
         session_map = create_session_map(body, headers)
@@ -58,18 +49,12 @@ defmodule Tellerapi.Bank.TellerBankApi do
           {:ok, %HTTPoison.Response{status_code: 200, body: body, headers: headers}} ->
             session_map = create_session_map(body, headers)
             Tellerapi.Session.insert_session(user, session_map)
-            IO.puts("----Success")
-            IO.inspect(body)
-            IO.puts("----")
             {:mfa_accepted}
         end
     end
   end
 
   def get_accounts_info(username, session_map) do
-    IO.puts("----session_map")
-    IO.inspect(session_map)
-    IO.puts("----")
     enc_key = session_map["enc_key"]
     account_id_list = []
     account_id_list = if Map.has_key?(session_map["accounts"], "checking") do
@@ -99,9 +84,6 @@ defmodule Tellerapi.Bank.TellerBankApi do
           "recent_transactions" => recent_transactions}
       end
     end
-    IO.puts("----Success")
-    IO.inspect(account_list)
-    IO.puts("----")
     account_list
   end
 
