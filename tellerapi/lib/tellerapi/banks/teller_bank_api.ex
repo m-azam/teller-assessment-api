@@ -80,7 +80,7 @@ defmodule Tellerapi.Bank.TellerBankApi do
           recent_transactions = response_map["last_transactions"]
           recent_transactions = get_all_transactions(username, account_id, recent_transactions)
           account_map = %{"available_balance" => response_map["available"],
-          "ledger_balance" => response_map["available"], "account_numer" => account_number,
+          "ledger_balance" => response_map["ledger"], "account_numer" => account_number,
           "recent_transactions" => recent_transactions}
       end
     end
