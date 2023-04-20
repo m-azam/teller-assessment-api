@@ -7,10 +7,11 @@ defmodule Tellerapi.Plug.Authenticate do
   end
 
   def call(conn, _opts) do
-    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
+    with token <- get_req_header(conn, "authorization"),
          {:ok, data} <- Tellerapi.Token.verify(token) do
       conn
       |> assign(:current_user, data.user_name)
+      |> assign(:user_bank, data.bank)
     else
       error ->
         conn

@@ -7,4 +7,12 @@ defmodule Tellerapi.BankInterface do
     end
   end
 
+  def fetch_account_details(username, bank) do
+    session_map = Tellerapi.Session.get_latest_session_by_username(username).session_data
+    case bank do
+      "teller_bank" -> Tellerapi.Bank.TellerBankApi.get_accounts_info(username, session_map)
+      _ -> Tellerapi.Bank.TellerBankApi.get_accounts_info(username, session_map)
+    end
+  end
+
 end

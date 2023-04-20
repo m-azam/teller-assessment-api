@@ -1,6 +1,7 @@
 defmodule Tellerapi.Session do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   schema "sessions" do
     field :username, :string
@@ -20,6 +21,7 @@ defmodule Tellerapi.Session do
     Tellerapi.Repo.insert(%Tellerapi.Session{username: username, session_data: session_map})
   end
 
-  def get_latest_session_by_username() do
+  def get_latest_session_by_username(username) do
+    from(s in Tellerapi.Session, where: s.username == ^username,  limit: 1, order_by: [desc: s.id]) |> Tellerapi.Repo.one
   end
 end

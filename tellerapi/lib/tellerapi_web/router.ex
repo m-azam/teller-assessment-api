@@ -16,8 +16,10 @@ defmodule TellerapiWeb.Router do
     post "/enroll", SessionController, :enroll
   end
 
-  scope "/api", MyAppWeb do
+  scope "/api", TellerapiWeb do
     pipe_through [:api, :authenticated]
+
+    get "/accounts", AccountController, :account
     # authenticated api calls here
   end
 

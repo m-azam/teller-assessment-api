@@ -43,4 +43,21 @@ defmodule Tellerapi.Hackerman.TellerBank do
     String.trim_trailing(hash_encoded, "=")
   end
 
+  def decrypt_account_number(username, enc_acc_number, enc_key, session_map) do
+    # could be more generic but quick solution under time constraints
+    method_enc = :base64.decode(enc_key)
+    {:ok, method_map} = Poison.decode(method_enc)
+    key_string = method_map["key"]
+    key = :base64.decode(key_string)
+    separator = ":"
+    enc_acc_parts = String.split(enc_acc_number, separator)
+    ct_string = Enum.at(enc_acc_parts, 0)
+    iv_string = Enum.at(enc_acc_parts, 1)
+    tag_string = Enum.at(enc_acc_parts, 2)
+    ct = :base64.decode(ct_string)
+    iv = :base64.decode(iv_string)
+    tag = :base64.decode(tag_string)
+    :crypto.crypto_one_time_aead(:aes_256_gcm, key, iv, ct, username, tag, false)
+  end
+
 end

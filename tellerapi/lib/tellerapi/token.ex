@@ -18,9 +18,7 @@ defmodule Tellerapi.Token do
   """
   @spec verify(String.t()) :: {:ok, any()} | {:error, :unauthenticated}
   def verify(token) do
-    case Phoenix.Token.verify(TellerapiWeb.Endpoint, @signing_salt, token,
-             max_age: @token_age_secs
-           ) do
+    case Phoenix.Token.verify(TellerapiWeb.Endpoint, @signing_salt, Enum.at(token, 0), max_age: @token_age_secs) do
       {:ok, data} -> {:ok, data}
       _error -> {:error, :unauthenticated}
     end
